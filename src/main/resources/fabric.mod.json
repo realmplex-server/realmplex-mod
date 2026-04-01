@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "realmplex-mod",
+	"version": "${version}",
+	"name": "Realmplex Mod",
+	"description": "bullshit",
+	"authors": [
+		"clamlum"
+	],
+	"contact": {
+		"homepage": "https://realmplex.com",
+		"sources": "https://github.com/clamlum2/realmplex-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/template-mod/icon.png",
+	"environment": "server",
+	"entrypoints": {
+		"main": [
+			"name.realmplexmod.RealmplexMod"
+		]
+	},
+	"mixins": [
+		"realmplex-mod.mixins.json",
+		{
+			"config": "realmplex-mod.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.18.5",
+		"minecraft": "~26.1",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
