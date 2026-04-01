@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "name.realmplexmod.mixin",
+	"package": "com.realmplex.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
 		"ExampleMixin"

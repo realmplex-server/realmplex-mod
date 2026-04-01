@@ -1,4 +1,4 @@
-package name.realmplexmod.mixin.client;
+package com.realmplex.mixin.client;
 
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;

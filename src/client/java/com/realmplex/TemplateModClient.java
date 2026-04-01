@@ -1,4 +1,4 @@
-package name.realmplexmod;
+package com.realmplex;
 
 import net.fabricmc.api.ClientModInitializer;
 

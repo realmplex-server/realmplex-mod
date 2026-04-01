@@ -1,9 +1,9 @@
 {
 	"required": true,
-	"package": "name.realmplexmod.mixin.client",
+	"package": "com.realmplex.mixin.client",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin"
+      "ExampleClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

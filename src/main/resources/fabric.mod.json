@@ -5,7 +5,8 @@
 	"name": "Realmplex Mod",
 	"description": "bullshit",
 	"authors": [
-		"clamlum"
+		"clamlum",
+		"toasterw"
 	],
 	"contact": {
 		"homepage": "https://realmplex.com",
@@ -16,13 +17,13 @@
 	"environment": "server",
 	"entrypoints": {
 		"main": [
-			"name.realmplexmod.RealmplexMod"
+			"com.realmplex.RealmplexMod"
 		]
 	},
 	"mixins": [
 		"realmplex-mod.mixins.json",
 		{
-			"config": "realmplex-mod.client.mixins.json",
+			"config": "realmplex-mod.mixins.json",
 			"environment": "client"
 		}
 	],
