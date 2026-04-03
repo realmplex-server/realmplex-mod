@@ -10,6 +10,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -88,6 +89,7 @@ public class CurrencyConverter {
         loadPairs();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(Commands.<CommandSourceStack>literal("exchange")
+                    .requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
                     .executes(CurrencyConverter::executeExchange)
                     .then(Commands.argument("currency", StringArgumentType.word())
                             .suggests((context, builder) -> {
