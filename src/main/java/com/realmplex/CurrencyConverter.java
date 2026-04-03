@@ -58,31 +58,6 @@ public class CurrencyConverter {
         PAIRS.add(new ExchangePair(usd, Items.NETHERITE_INGOT, 64));
         PAIRS.add(new ExchangePair(usd, Items.NETHERITE_SCRAP, 16));
 
-        CurrencyItem spud = new CurrencyItem(
-                Items.POTATO,
-                "spud",
-                "Spud",
-                0xFFFF55,
-                true,
-                null,
-                Map.of("spud", true)
-        );
-
-        PAIRS.add(new ExchangePair(spud, Items.NETHERITE_INGOT, 64));
-        PAIRS.add(new ExchangePair(spud, Items.NETHERITE_SCRAP, 16));
-
-        CurrencyItem mash = new CurrencyItem(
-                Items.PACKED_MUD,
-                "mash",
-                "Mash",
-                0xFF5555,
-                true,
-                null,
-                Map.of("mash", true)
-        );
-
-        PAIRS.add(new ExchangePair(mash, Items.NETHERITE_INGOT, 32));
-
     }
 
     public static void register() {
