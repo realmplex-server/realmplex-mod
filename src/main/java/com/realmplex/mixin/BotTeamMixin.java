@@ -1,7 +1,6 @@
 package com.realmplex.mixin;
 
 import carpet.patches.EntityPlayerMPFake;
-import com.mojang.logging.LogUtils;
 import net.minecraft.network.Connection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,11 +27,8 @@ public abstract class BotTeamMixin {
 	@Shadow @Final
 	private MinecraftServer server;
 
-	@Inject(
-			method = "placeNewPlayer(Lnet/minecraft/network/Connection;Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/server/network/CommonListenerCookie;)V",
-			at = @At("HEAD")
-	)
-	private void realmplex$addFakePlayerToTeam(Connection connection, ServerPlayer player, CommonListenerCookie cookie, CallbackInfo ci) {
+	@Inject(method = "placeNewPlayer", at = @At("HEAD"))
+	private void addFakePlayerToTeam(Connection connection, ServerPlayer player, CommonListenerCookie cookie, CallbackInfo ci) {
 		if (!(player instanceof EntityPlayerMPFake)) return;
 
 		Scoreboard scoreboard = this.server.getScoreboard();
@@ -43,5 +39,19 @@ public abstract class BotTeamMixin {
 		}
 
 		scoreboard.addPlayerToTeam(player.getScoreboardName(), team);
+	}
+
+	@Inject(method = "remove", at = @At("HEAD"))
+	private void removeFakePlayerFromTeam(ServerPlayer player, CallbackInfo ci) {
+		if (!(player instanceof EntityPlayerMPFake)) return;
+
+		Scoreboard scoreboard = this.server.getScoreboard();
+		PlayerTeam team = scoreboard.getPlayerTeam(BOT_TEAM_NAME);
+		if (team == null) {
+			LOGGER.warn("Cannot find team for fake player, expecting team: " + BOT_TEAM_NAME);
+			return;
+		}
+
+		scoreboard.removePlayerFromTeam(player.getScoreboardName(), team);
 	}
 }
