@@ -13,5 +13,6 @@ public class RealmplexMod implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Loaded Realmplex Mod");
 		CurrencyConverter.register();
+		ItemFlexer.register();
 	}
 }
