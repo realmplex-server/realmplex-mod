@@ -12,7 +12,7 @@
 		"homepage": "https://realmplex.com",
 		"sources": "https://github.com/clamlum2/realmplex-mod"
 	},
-	"license": "CC0-1.0",
+	"license": "GPL-3.0",
 	"icon": "assets/realmplex-mod/icon.png",
 	"environment": "server",
 	"entrypoints": {
@@ -21,11 +21,7 @@
 		]
 	},
 	"mixins": [
-		"realmplex-mod.mixins.json",
-		{
-			"config": "realmplex-mod.mixins.json",
-			"environment": "client"
-		}
+		"realmplex-mod.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.18.5",
