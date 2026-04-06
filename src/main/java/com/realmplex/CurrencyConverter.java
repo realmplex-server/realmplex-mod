@@ -64,7 +64,11 @@ public class CurrencyConverter {
         loadPairs();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(Commands.<CommandSourceStack>literal("exchange")
-                    .requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
+                    .requires(source -> {
+                        boolean opAllowed = source.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER);
+                        boolean isCommandBlock = source.getEntity() == null;
+                        return opAllowed || isCommandBlock;
+                    })
                     .executes(CurrencyConverter::executeExchange)
                     .then(Commands.argument("currency", StringArgumentType.word())
                             .suggests((context, builder) -> {
