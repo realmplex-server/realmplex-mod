@@ -3,7 +3,11 @@
 	"package": "com.realmplex.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"BotTeamMixin"
+		"BotTeamMixin",
+		"LogPlayerJoinMixin",
+		"LogPlayerLeaveMixin",
+		"LogServerStartupMixin",
+		"LogServerShutdownMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
