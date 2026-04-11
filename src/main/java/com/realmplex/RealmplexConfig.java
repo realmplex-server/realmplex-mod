@@ -67,7 +67,7 @@ public class RealmplexConfig {
         Files.createFile(configFile.toPath());
 
         // TODO write default config
-        Config defaultConfig = new Config("", "");
+        Config defaultConfig = new Config("", "http://127.0.0.1");
         PrintWriter writer = new PrintWriter(configFile, StandardCharsets.UTF_8);
         writer.write(gson.toJson(defaultConfig));
         writer.close();
