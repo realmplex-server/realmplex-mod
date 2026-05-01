@@ -20,6 +20,9 @@ repositories {
     maven {
         url "https://masa.dy.fi/maven"
     }
+    maven {
+        url "https://maven.supersanta.me/snapshots"
+    }
 }
 
 loom {
@@ -44,6 +47,8 @@ dependencies {
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     implementation "carpet:fabric-carpet:${project.carpet_version}"
+
+    implementation("me.senseiwells:puppet-players:${project.puppetplayers_version}")
 }
 
 processResources {
