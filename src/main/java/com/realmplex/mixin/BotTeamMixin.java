@@ -1,6 +1,7 @@
 package com.realmplex.mixin;
 
 import carpet.patches.EntityPlayerMPFake;
+import me.senseiwells.puppet.PuppetPlayer;
 import net.minecraft.network.Connection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,29 +30,28 @@ public abstract class BotTeamMixin {
 
 	@Inject(method = "placeNewPlayer", at = @At("HEAD"))
 	private void addFakePlayerToTeam(Connection connection, ServerPlayer player, CommonListenerCookie cookie, CallbackInfo ci) {
-		if (!(player instanceof EntityPlayerMPFake)) return;
+		if ((player instanceof EntityPlayerMPFake) || (player instanceof PuppetPlayer)) {
+			Scoreboard scoreboard = this.server.getScoreboard();
+			PlayerTeam team = scoreboard.getPlayerTeam(BOT_TEAM_NAME);
+			if (team == null) {
+				LOGGER.warn("Cannot find team for fake player, expecting team: " + BOT_TEAM_NAME);
+				return;
+			}
 
-		Scoreboard scoreboard = this.server.getScoreboard();
-		PlayerTeam team = scoreboard.getPlayerTeam(BOT_TEAM_NAME);
-		if (team == null) {
-			LOGGER.warn("Cannot find team for fake player, expecting team: " + BOT_TEAM_NAME);
-			return;
+			scoreboard.addPlayerToTeam(player.getScoreboardName(), team);
 		}
-
-		scoreboard.addPlayerToTeam(player.getScoreboardName(), team);
 	}
 
 	@Inject(method = "remove", at = @At("HEAD"))
 	private void removeFakePlayerFromTeam(ServerPlayer player, CallbackInfo ci) {
-		if (!(player instanceof EntityPlayerMPFake)) return;
-
-		Scoreboard scoreboard = this.server.getScoreboard();
-		PlayerTeam team = scoreboard.getPlayerTeam(BOT_TEAM_NAME);
-		if (team == null) {
-			LOGGER.warn("Cannot find team for fake player, expecting team: " + BOT_TEAM_NAME);
-			return;
+		if ((player instanceof EntityPlayerMPFake) || (player instanceof PuppetPlayer)) {
+			Scoreboard scoreboard = this.server.getScoreboard();
+			PlayerTeam team = scoreboard.getPlayerTeam(BOT_TEAM_NAME);
+			if (team == null) {
+				LOGGER.warn("Cannot find team for fake player, expecting team: " + BOT_TEAM_NAME);
+				return;
+			}
+			scoreboard.removePlayerFromTeam(player.getScoreboardName(), team);
 		}
-
-		scoreboard.removePlayerFromTeam(player.getScoreboardName(), team);
 	}
 }
