@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.server.level.ServerPlayer;
@@ -44,20 +45,42 @@ public class CurrencyConverter {
 
     private static void loadPairs() {
         PAIRS.clear();
+        CurrencyConfig config = CurrencyConfig.load();
 
-        CurrencyItem usd = new CurrencyItem(
-                Items.PAPER,
-                "usd",
-                "US Dollar",
-                0x5555FF,
-                true,
-                "minecraft:filled_map",
-                Map.of("usd", true)
-        );
+        for (CurrencyConfig.PairConfig pair : config.pairs) {
+            CurrencyConfig.CurrencyItemConfig c = config.currencies.get(pair.currency);
 
-        PAIRS.add(new ExchangePair(usd, Items.NETHERITE_INGOT, 64));
-        PAIRS.add(new ExchangePair(usd, Items.NETHERITE_SCRAP, 16));
+            if (c == null) {
+                RealmplexMod.LOGGER.warn("Unknown currency key '{}', skipping pair", pair.currency);
+                continue;
+            }
 
+            Item currencyItem = BuiltInRegistries.ITEM.getValue(Identifier.parse(c.item));
+            Item rawItem      = BuiltInRegistries.ITEM.getValue(Identifier.parse(pair.rawItem));
+
+            if (currencyItem == Items.AIR || rawItem == Items.AIR) {
+                RealmplexMod.LOGGER.warn("Unknown item in pair '{}: {}', skipping", pair.currency, pair.rawItem);
+                continue;
+            }
+
+            int color;
+            try {
+                color = Integer.parseInt(c.color.replace("#", ""), 16);
+            } catch (NumberFormatException e) {
+                RealmplexMod.LOGGER.warn("Invalid color '{}' for currency '{}', defaulting to white", c.color, pair.currency);
+                color = 0xFFFFFF;
+            }
+
+            Map<String, Object> extraNbt = c.extraNbt != null ? c.extraNbt : Map.of();
+
+            PAIRS.add(new ExchangePair(
+                    new CurrencyItem(currencyItem, pair.currency, c.displayName, color, c.glint, c.itemModel, extraNbt),
+                    rawItem,
+                    pair.rate
+            ));
+        }
+
+        RealmplexMod.LOGGER.info("Loaded {} currency exchange pairs", PAIRS.size());
     }
 
     public static void register() {
@@ -118,7 +141,7 @@ public class CurrencyConverter {
             }
         }
 
-        context.getSource().sendFailure(Component.literal("no valid exchange" + currencyKey));
+        context.getSource().sendFailure(Component.literal("no valid exchange for " + currencyKey));
         return 0;
     }
 
